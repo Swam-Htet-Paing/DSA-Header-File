@@ -209,4 +209,127 @@ int peek(struct Stack *stack){
     }
 }
 
+//Stack with Linked Lists
+
+struct StackLL{
+    struct LL* top;
+};
+
+void StackLLinit(struct StackLL* stack){
+    stack->top = NULL;
+}
+
+void StackPush(struct StackLL* stack, int data){
+    struct LL* newNode = (struct LL*)malloc(sizeof(struct LL));
+    if(newNode==NULL){
+        printf("Memory allocation for a linked list failed!\n");
+    }
+    newNode->data = data;
+    newNode->next = stack->top;
+    stack->top = newNode;
+    printf("New LL node pushed!");
+}
+
+int isLLEmpty(struct StackLL* stack){
+    return (stack->top == NULL);
+}
+
+int Stackpeek(struct StackLL* stack){
+    if(isLLEmpty(stack)){
+        printf("Stacked Linked Lists is full\n");
+        return 1;
+    }
+    else{
+        return stack->top->data;
+    }
+}
+
+struct TreeNode{
+   int data;
+   struct TreeNode* left;
+   struct TreeNode* right;
+};
+
+struct TreeNode* createNewTNode(int data){
+
+   struct TreeNode* NewTNode = (struct TreeNode*) malloc(sizeof(struct TreeNode));
+   if(NewTNode == NULL){
+       printf("Malloc Failed!\n");
+       exit(1);
+   }
+   NewTNode->data = data;
+   NewTNode->left = NULL;
+   NewTNode->right = NULL;
+   return NewTNode;
+}
+
+struct TreeNode* insertNode(struct TreeNode* root, int data){
+
+   if(root == NULL){
+       root = createNewTNode(data);
+
+   } 
+   else if(data < root->data){
+       root->left = insertNode(root->left,data);
+   }
+
+   else{
+       root->right = insertNode(root->right,data);
+   }
+
+   return root;
+}
+
+void inorder(struct TreeNode* root){
+
+   if(root != NULL){
+       inorder(root->left);
+       printf("%d-",root->data);
+       inorder(root->right);
+   }
+
+}
+
+struct TreeNode* findMin(struct TreeNode* root){
+   while (root->left != NULL){
+       root = root->left;
+   }
+   return root;
+}
+
+struct TreeNode* deleteTNode(struct TreeNode* root, int data){
+
+   if(root==NULL){
+       return root;
+   }
+
+   if(data<root->data){
+
+       root->left = deleteNode(root->left,data);
+   } else if(data>root->data){
+      root->right = deleteNode(root->right,data);
+   } else{
+
+       if(root->left == NULL){
+           struct TreeNode* temp = root->right;
+           free(root);
+           return temp;
+       } else if(root->right == NULL){
+           struct TreeNode* temp = root->left;
+           free(root);
+           return temp;
+       }
+
+       struct TreeNode* temp = findMin(root->right);
+
+       root->data = temp->data;
+
+       root->right = deleteNode(root->right,temp->data);
+
+   }
+   
+
+
+
+
 #endif
